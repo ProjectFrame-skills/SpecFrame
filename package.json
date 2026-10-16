@@ -1,0 +1,41 @@
+{
+  "name": "specframe-cli",
+  "version": "0.1.0",
+  "description": "Clarify ideas into full-scope requirements. Install the SpecFrame skill and recovery hook for Codex.",
+  "type": "module",
+  "bin": {
+    "specframe": "cli/specframe.mjs"
+  },
+  "files": [
+    "cli/specframe.mjs",
+    "skills/specframe/SKILL.md",
+    "skills/specframe/agents/openai.yaml",
+    "skills/specframe/references/operating-contract.md",
+    "skills/specframe/references/visual.md",
+    "skills/specframe/references/web.md",
+    "skills/specframe/scripts/state.py",
+    "tools/install_specframe.py",
+    "README.md",
+    "README.ko.md",
+    "README.zh.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ProjectFrame-skills/SpecFrame.git"
+  },
+  "homepage": "https://github.com/ProjectFrame-skills/SpecFrame#readme",
+  "bugs": {
+    "url": "https://github.com/ProjectFrame-skills/SpecFrame/issues"
+  },
+  "keywords": ["codex", "skill", "ai", "requirements", "requirements-engineering", "specframe"],
+  "scripts": {
+    "test": "node --test tests/npm-cli.test.mjs"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

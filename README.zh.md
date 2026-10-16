@@ -2,20 +2,26 @@
 
 [English](README.md) · [한국어](README.ko.md) · **简体中文**
 
+[![npm](https://img.shields.io/npm/v/specframe-cli?color=cb3837)](https://www.npmjs.com/package/specframe-cli)
 ![Skill](https://img.shields.io/badge/skill-SpecFrame-2563eb)
 ![Python](https://img.shields.io/badge/python-3.11%2B-3776ab?logo=python&logoColor=white)
 ![Runtime](https://img.shields.io/badge/runtime-standard%20library-16a34a)
 ![Checks](https://github.com/ProjectFrame-skills/SpecFrame/actions/workflows/verify.yml/badge.svg)
 
-## 🚀 安装到 Codex
+## 🚀 通过 npm 安装
 
 ```bash
-git clone https://github.com/ProjectFrame-skills/SpecFrame.git
-cd SpecFrame
-python3 tools/install_specframe.py
+npm install -g specframe-cli@latest
+specframe install
 ```
 
-需要 Python 3.11+。安装后在新的 Codex 对话中调用 `$specframe`。安装工具还会将只针对对应会话状态的恢复 hook 合并到 Codex 配置；实际执行前，宿主必须信任其准确配置。
+**也可以不安装全局 CLI，直接用一条命令安装 skill：**
+
+```bash
+npx --yes specframe-cli@latest install
+```
+
+需要 Node.js 18+ 和 Python 3.11+。安装后在新的 Codex 对话中调用 `$specframe`。安装工具还会将只针对对应会话状态的恢复 hook 合并到 Codex 配置；实际执行前，宿主必须信任其准确配置。
 
 **将网站、应用或程序的想法整理为可审查、可批准项目需求的 AI skill。**
 
@@ -39,15 +45,25 @@ SpecFrame 帮助明确**产品服务谁、应该做什么、如何表现，以�
 
 辅助工具只使用 Python 标准库，不需要额外 Python 包、专用模型 API key 或推理服务器。判断和工具使用由宿主 AI 完成。
 
-默认位置为 `~/.codex/skills/specframe` 和 `~/.codex/hooks.json`。使用自定义 Codex home 时也可指定路径：
+npm CLI 遵循 `CODEX_HOME`，未设置时使用 `~/.codex`。它将 skill 安装到该目录下的 `skills/specframe`，并把恢复 hook 合并到 `hooks.json`。也可明确指定路径：
 
 ```bash
-python3 tools/install_specframe.py \
+specframe install \
   --destination /absolute/path/to/skills/specframe \
   --hooks /absolute/path/to/hooks.json
 ```
 
 安装工具复制实现并保留已有 hook 组。首次更改 hook 前，如已有配置，会保存为 `hooks.json.before-specframe`。它不会改变宿主信任，也不会备份已有 skill 安装；需要旧版本时请另行复制。
+
+### 从源码安装（可选）
+
+```bash
+git clone https://github.com/ProjectFrame-skills/SpecFrame.git
+cd SpecFrame
+python3 tools/install_specframe.py
+```
+
+源码安装需要 Python 3.11+，默认使用 `~/.codex`；其他路径请通过 `--destination` 和 `--hooks` 指定。npm CLI 没有额外 npm 依赖，调用同一个 Python 安装工具。如需明确选择 Python 可执行文件，可设置 `SPECFRAME_PYTHON`。
 
 其他支持 skills 和本地 Python 执行的宿主可以加载 `skills/specframe/SKILL.md` 及其引用。自动调用 hook 取决于宿主支持；无法自动调用时，应在依赖先前决策的工作之前明确读取恢复状态。
 
@@ -137,15 +153,18 @@ python3 skills/specframe/scripts/state.py \
 
 ```bash
 python3 -m unittest discover -s tests -v
+npm test
 ```
 
-测试覆盖当前状态校验、无变化写入、恢复读取、owner 隔离、hook 过滤、批准失效和标准输入传递。它们不评判提问质量，也不证明真实宿主自动压缩。行为验证应检查实际继续与语义保留，而不只是文件存在。
+Python 测试覆盖当前状态校验、无变化写入、恢复读取、owner 隔离、hook 过滤、批准失效和标准输入传递。Node 测试检查 CLI 参数、隔离安装、已有 hook 保留和路径处理。它们不评判提问质量，也不证明真实宿主自动压缩。行为验证应检查实际继续与语义保留，而不只是文件存在。
 
 ```text
 skills/specframe/             入口、运行契约、引用和辅助工具
 tests/                       可复现状态与恢复检查
+cli/specframe.mjs            npm 命令与 Python 安装工具桥接
+package.json                 npm 元数据与发布文件白名单
 tools/install_specframe.py   skill 复制及恢复 hook 集成
-.github/workflows/verify.yml Python 测试及隔离安装检查
+.github/workflows/verify.yml Python/Node 测试及隔离安装检查
 ```
 
 本仓库发布实现和使用说明，不含私有协议、个人原始链接、对话全文、项目状态或本地评估历史。SynFrame 和 ProjectFrame 是独立范围，不会一起安装，也不会自动构建产品。

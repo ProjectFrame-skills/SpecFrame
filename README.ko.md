@@ -2,20 +2,26 @@
 
 [English](README.md) · **한국어** · [简体中文](README.zh.md)
 
+[![npm](https://img.shields.io/npm/v/specframe-cli?color=cb3837)](https://www.npmjs.com/package/specframe-cli)
 ![Skill](https://img.shields.io/badge/skill-SpecFrame-2563eb)
 ![Python](https://img.shields.io/badge/python-3.11%2B-3776ab?logo=python&logoColor=white)
 ![Runtime](https://img.shields.io/badge/runtime-standard%20library-16a34a)
 ![Checks](https://github.com/ProjectFrame-skills/SpecFrame/actions/workflows/verify.yml/badge.svg)
 
-## 🚀 Codex에 설치하기
+## 🚀 npm으로 설치하기
 
 ```bash
-git clone https://github.com/ProjectFrame-skills/SpecFrame.git
-cd SpecFrame
-python3 tools/install_specframe.py
+npm install -g specframe-cli@latest
+specframe install
 ```
 
-Python 3.11 이상이 필요합니다. 설치 후 새 Codex 대화에서 `$specframe`을 호출하세요. 설치 도구는 해당 대화의 상태만 복구하는 hook을 Codex 설정에 병합합니다. 실제 실행에는 호스트의 정확한 hook 정의에 대한 신뢰 승인이 필요합니다.
+**전역 CLI 설치 없이 한 번에 skill을 설치할 수도 있습니다.**
+
+```bash
+npx --yes specframe-cli@latest install
+```
+
+Node.js 18 이상과 Python 3.11 이상이 필요합니다. 설치 후 새 Codex 대화에서 `$specframe`을 호출하세요. 설치 도구는 해당 대화의 상태만 복구하는 hook을 Codex 설정에 병합합니다. 실제 실행에는 호스트의 정확한 hook 정의에 대한 신뢰 승인이 필요합니다.
 
 **웹·앱·프로그램 아이디어를 검토하고 승인할 수 있는 프로젝트 요구사항으로 구체화하는 AI skill.**
 
@@ -39,15 +45,25 @@ SpecFrame은 **누구의 문제를 해결하는지, 어떤 기능과 동작이 �
 
 보조 코드는 Python 표준 라이브러리만 사용합니다. 추가 Python 패키지·전용 모델 API 키·추론 서버는 필요하지 않습니다. 판단과 실제 도구 사용은 호스트 AI가 수행합니다.
 
-기본 위치는 `~/.codex/skills/specframe`과 `~/.codex/hooks.json`입니다. 별도 Codex 홈을 포함해 경로를 지정할 수 있습니다.
+npm CLI는 `CODEX_HOME`을 따르며, 설정이 없으면 `~/.codex`를 사용합니다. 그 아래 `skills/specframe`에 skill을 설치하고 `hooks.json`에 복구 hook을 병합합니다. 경로를 직접 지정할 수도 있습니다.
 
 ```bash
-python3 tools/install_specframe.py \
+specframe install \
   --destination /absolute/path/to/skills/specframe \
   --hooks /absolute/path/to/hooks.json
 ```
 
 설치 도구는 구현체를 복사하고 기존 hook 그룹을 유지합니다. hook을 처음 변경하기 전 기존 설정이 있으면 `hooks.json.before-specframe`으로 보존합니다. 호스트의 신뢰 설정은 변경하지 않습니다. 기존 skill 설치본은 백업하지 않으므로 이전 버전이 필요하면 따로 보관하세요.
+
+### 소스에서 설치하기 (선택)
+
+```bash
+git clone https://github.com/ProjectFrame-skills/SpecFrame.git
+cd SpecFrame
+python3 tools/install_specframe.py
+```
+
+소스 설치에는 Python 3.11 이상이 필요하며 기본 홈은 `~/.codex`입니다. 다른 경로는 `--destination`과 `--hooks`로 지정하세요. npm CLI에는 추가 npm 의존성이 없고 동일한 Python 설치 도구를 호출합니다. Python 실행 파일을 직접 고르려면 `SPECFRAME_PYTHON`을 설정하세요.
 
 다른 호스트에서도 skills와 로컬 Python 실행을 지원하면 `skills/specframe/SKILL.md`와 연결 문서를 불러올 수 있습니다. hook 자동 호출은 호스트 지원에 달려 있습니다. 자동 호출이 없다면 이전 결정에 의존하는 작업 전에 복구 상태를 명시적으로 읽어야 합니다.
 
@@ -137,15 +153,18 @@ python3 skills/specframe/scripts/state.py \
 
 ```bash
 python3 -m unittest discover -s tests -v
+npm test
 ```
 
-포함된 검사는 현재 상태 검증·변경 없는 저장·복구 읽기·owner 분리·hook 필터·승인 해제·표준입력 전달을 다룹니다. 질의 품질이나 실제 호스트 자동 압축을 입증하지 않습니다. 행동 검증은 파일 존재에 그치지 않고 실제 재개와 의미 보존을 확인해야 합니다.
+Python 검사는 현재 상태 검증·변경 없는 저장·복구 읽기·owner 분리·hook 필터·승인 해제·표준입력 전달을 다룹니다. Node 검사는 CLI 인자·격리 설치·기존 hook 보존·경로 처리를 확인합니다. 질의 품질이나 실제 호스트 자동 압축을 입증하지 않습니다. 행동 검증은 파일 존재에 그치지 않고 실제 재개와 의미 보존을 확인해야 합니다.
 
 ```text
 skills/specframe/             진입점·운영 계약·참고 문서·보조 코드
 tests/                       재현 가능한 상태·복구 검사
+cli/specframe.mjs            npm 명령과 Python 설치 도구 연결
+package.json                 npm 메타데이터와 포함 파일 목록
 tools/install_specframe.py   skill 복사와 복구 hook 통합
-.github/workflows/verify.yml Python 검사와 격리 설치 확인
+.github/workflows/verify.yml Python/Node 검사와 격리 설치 확인
 ```
 
 구현체와 사용 문서를 배포합니다. 사적 합의·개인 원문 링크·대화 전문·프로젝트 상태·로컬 평가 이력은 제외합니다. SynFrame과 ProjectFrame은 별도 범위이며 함께 설치하거나 제품을 자동 구현하지 않습니다.

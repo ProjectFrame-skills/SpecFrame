@@ -15,6 +15,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: npm CLI installation tests
+        run: npm test
+      - name: npm package contents
+        run: npm pack --dry-run
       - name: State and recovery tests
         run: python3 -m unittest discover -s tests -v
       - name: Isolated installation

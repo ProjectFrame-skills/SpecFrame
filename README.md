@@ -2,20 +2,26 @@
 
 **English** · [한국어](README.ko.md) · [简体中文](README.zh.md)
 
+[![npm](https://img.shields.io/npm/v/specframe-cli?color=cb3837)](https://www.npmjs.com/package/specframe-cli)
 ![Skill](https://img.shields.io/badge/skill-SpecFrame-2563eb)
 ![Python](https://img.shields.io/badge/python-3.11%2B-3776ab?logo=python&logoColor=white)
 ![Runtime](https://img.shields.io/badge/runtime-standard%20library-16a34a)
 ![Checks](https://github.com/ProjectFrame-skills/SpecFrame/actions/workflows/verify.yml/badge.svg)
 
-## 🚀 Install for Codex
+## 🚀 Install with npm
 
 ```bash
-git clone https://github.com/ProjectFrame-skills/SpecFrame.git
-cd SpecFrame
-python3 tools/install_specframe.py
+npm install -g specframe-cli@latest
+specframe install
 ```
 
-Requires Python 3.11+. Invoke `$specframe` in a new Codex conversation after installation. The installer also merges a thread-scoped recovery hook into Codex configuration; the host must trust its exact definition before it can run.
+**Or install the skill in one command, without a global CLI:**
+
+```bash
+npx --yes specframe-cli@latest install
+```
+
+Requires Node.js 18+ and Python 3.11+. Invoke `$specframe` in a new Codex conversation after installation. The installer also merges a thread-scoped recovery hook into Codex configuration; the host must trust its exact definition before it can run.
 
 **An AI skill that turns a website, app, or program idea into a project you can review and approve.**
 
@@ -39,15 +45,25 @@ After full-scope requirements and your final approval, [SynFrame](https://github
 
 The helper uses only Python's standard library. No additional Python package, dedicated model API key, or reasoning server is required. The host AI supplies judgments and tools.
 
-Defaults are `~/.codex/skills/specframe` and `~/.codex/hooks.json`. For custom paths, including a custom Codex home:
+The npm CLI respects `CODEX_HOME`; otherwise it uses `~/.codex`. It installs the skill in `skills/specframe` and merges the recovery hook into `hooks.json` under that home. For explicit paths:
 
 ```bash
-python3 tools/install_specframe.py \
+specframe install \
   --destination /absolute/path/to/skills/specframe \
   --hooks /absolute/path/to/hooks.json
 ```
 
 The installer copies the implementation and preserves existing hook groups. Before its first hook change, it saves an existing configuration as `hooks.json.before-specframe`. It does not change hook trust or back up an existing skill installation; keep a separate copy if you need the previous version.
+
+### Install from source (optional)
+
+```bash
+git clone https://github.com/ProjectFrame-skills/SpecFrame.git
+cd SpecFrame
+python3 tools/install_specframe.py
+```
+
+The source installer needs Python 3.11+ and defaults to `~/.codex`; pass `--destination` and `--hooks` for other paths. The npm CLI has no npm dependencies and calls the same bundled Python installer. Set `SPECFRAME_PYTHON` to an explicit Python executable if needed.
 
 Other hosts can load `skills/specframe/SKILL.md` and its references if they support skills and local Python execution. Automatic hook invocation depends on the host. Explicitly read recovery state before dependent work when automatic invocation is unavailable.
 
@@ -137,15 +153,18 @@ The [complete operating contract](skills/specframe/references/operating-contract
 
 ```bash
 python3 -m unittest discover -s tests -v
+npm test
 ```
 
-Tests cover current-state validation, no-op writes, recovery reads, owner isolation, hook filtering, approval invalidation, and stdin transport. They do not grade question quality or prove native host compaction. Behavioral checks must inspect actual continuation and preserved meaning, not file existence.
+Python tests cover current-state validation, no-op writes, recovery reads, owner isolation, hook filtering, approval invalidation, and stdin transport. Node tests cover CLI arguments, isolated installation, hook preservation, and path handling. They do not grade question quality or prove native host compaction. Behavioral checks must inspect actual continuation and preserved meaning, not file existence.
 
 ```text
 skills/specframe/             Entrypoint, operating contract, references, helper
 tests/                       Reproducible state and recovery checks
+cli/specframe.mjs            npm command and Python installer bridge
+package.json                 npm package metadata and payload allowlist
 tools/install_specframe.py   Skill copy and recovery hook integration
-.github/workflows/verify.yml Python tests and isolated installation check
+.github/workflows/verify.yml Python/Node tests and isolated installation check
 ```
 
 This repository distributes implementation and usage documentation. Private agreements, personal source links, transcripts, project state, and local evaluation history are excluded. SynFrame and ProjectFrame are separate scopes; they are not bundled and the product is not automatically built.
