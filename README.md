@@ -8,6 +8,28 @@
 ![Runtime](https://img.shields.io/badge/runtime-standard%20library-16a34a)
 ![Checks](https://github.com/ProjectFrame-skills/SpecFrame/actions/workflows/verify.yml/badge.svg)
 
+## Prerequisites
+
+| Program | When it is required |
+|---|---|
+| Codex app or CLI | The AI host that runs `$specframe`, with skills, local file access, and permission to execute Python. Installing the npm package alone does not provide an AI host. |
+| [Python 3.11+](https://www.python.org/downloads/) | Required for skill installation and the state/recovery helper. SpecFrame uses Python's standard library and does not require a separate database or pip packages. |
+| [Node.js 18+](https://nodejs.org/en/download), with npm/npx | Required for the npm/npx installation route and the `specframe` command. Use a currently supported Node.js LTS release. npm/npx are normally included with Node.js. |
+| [Git](https://git-scm.com/downloads/) | Required only for the `git clone` source-install route shown below. |
+
+**npm route:** Codex + Node.js/npm/npx + Python. **Source route:** Codex + Git + Python; SpecFrame itself does not require Node.js unless you also use the npm CLI.
+
+Check the npm-route programs before installation:
+
+```bash
+node --version
+npm --version
+npx --version
+python3 --version
+```
+
+On Windows, use `python` or `py -3` if that is your Python command. `SPECFRAME_PYTHON` selects an existing Python executable; it does not install Python. Other AI hosts need compatible skill support and local execution. Additional tools or service access depend on the actual goal and are not universal prerequisites.
+
 ## 🚀 Install with npm
 
 ```bash
@@ -21,7 +43,7 @@ specframe install
 npx --yes specframe-cli@latest install
 ```
 
-Requires Node.js 18+ and Python 3.11+. Invoke `$specframe` in a new Codex conversation after installation. The installer also merges a thread-scoped recovery hook into Codex configuration; the host must trust its exact definition before it can run.
+Invoke `$specframe` in a new Codex conversation after installation. The installer also merges a thread-scoped recovery hook into Codex configuration; the host must trust its exact definition before it can run.
 
 **An AI skill that turns a website, app, or program idea into a project you can review and approve.**
 
@@ -63,7 +85,7 @@ cd SpecFrame
 python3 tools/install_specframe.py
 ```
 
-The source installer needs Python 3.11+ and defaults to `~/.codex`; pass `--destination` and `--hooks` for other paths. The npm CLI has no npm dependencies and calls the same bundled Python installer. Set `SPECFRAME_PYTHON` to an explicit Python executable if needed.
+The source installer needs Python 3.11+ and defaults to `~/.codex`; pass `--destination` and `--hooks` for other paths. The npm CLI has no npm dependencies and calls the same bundled Python installer. Set `SPECFRAME_PYTHON` to select an existing Python executable if needed; it does not install Python.
 
 Other hosts can load `skills/specframe/SKILL.md` and its references if they support skills and local Python execution. Automatic hook invocation depends on the host. Explicitly read recovery state before dependent work when automatic invocation is unavailable.
 

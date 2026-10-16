@@ -8,6 +8,28 @@
 ![Runtime](https://img.shields.io/badge/runtime-standard%20library-16a34a)
 ![Checks](https://github.com/ProjectFrame-skills/SpecFrame/actions/workflows/verify.yml/badge.svg)
 
+## 所需软件
+
+| 软件 | 何时需要 |
+|---|---|
+| Codex 应用或 CLI | 运行 `$specframe` 的 AI 宿主，需要支持 skills、本地文件访问和 Python 执行权限。仅安装 npm 包不会提供 AI 宿主。 |
+| [Python 3.11+](https://www.python.org/downloads/) | skill 安装及状态保存/恢复始终需要。SpecFrame 使用 Python 标准库，不需要额外数据库或 pip 包。 |
+| [Node.js 18+](https://nodejs.org/en/download)，含 npm/npx | 使用 npm/npx 安装或 `specframe` 命令时需要。建议选择仍受支持的 Node.js LTS 版本；npm/npx 通常随 Node.js 安装。 |
+| [Git](https://git-scm.com/downloads/) | 仅在使用下方 `git clone` 源码安装方式时需要。 |
+
+**npm 安装：** Codex + Node.js/npm/npx + Python。**源码安装：** Codex + Git + Python；不使用 npm CLI 时，SpecFrame 自身无需 Node.js。
+
+安装前可检查 npm 方式需要的软件：
+
+```bash
+node --version
+npm --version
+npx --version
+python3 --version
+```
+
+Windows 上如使用 `python` 或 `py -3`，请替换相应命令。`SPECFRAME_PYTHON` 只选择已有的 Python 可执行文件，不负责安装 Python。其他 AI 宿主需要兼容的 skill 支持与本地执行能力。任务所需的额外工具和服务权限取决于具体目标，不属于通用前置条件。
+
 ## 🚀 通过 npm 安装
 
 ```bash
@@ -21,7 +43,7 @@ specframe install
 npx --yes specframe-cli@latest install
 ```
 
-需要 Node.js 18+ 和 Python 3.11+。安装后在新的 Codex 对话中调用 `$specframe`。安装工具还会将只针对对应会话状态的恢复 hook 合并到 Codex 配置；实际执行前，宿主必须信任其准确配置。
+安装后在新的 Codex 对话中调用 `$specframe`。安装工具还会将只针对对应会话状态的恢复 hook 合并到 Codex 配置；实际执行前，宿主必须信任其准确配置。
 
 **将网站、应用或程序的想法整理为可审查、可批准项目需求的 AI skill。**
 
@@ -63,7 +85,7 @@ cd SpecFrame
 python3 tools/install_specframe.py
 ```
 
-源码安装需要 Python 3.11+，默认使用 `~/.codex`；其他路径请通过 `--destination` 和 `--hooks` 指定。npm CLI 没有额外 npm 依赖，调用同一个 Python 安装工具。如需明确选择 Python 可执行文件，可设置 `SPECFRAME_PYTHON`。
+源码安装需要 Python 3.11+，默认使用 `~/.codex`；其他路径请通过 `--destination` 和 `--hooks` 指定。npm CLI 没有额外 npm 依赖，调用同一个 Python 安装工具。如需明确选择已安装的 Python 可执行文件，可设置 `SPECFRAME_PYTHON`；该设置不会安装 Python。
 
 其他支持 skills 和本地 Python 执行的宿主可以加载 `skills/specframe/SKILL.md` 及其引用。自动调用 hook 取决于宿主支持；无法自动调用时，应在依赖先前决策的工作之前明确读取恢复状态。
 

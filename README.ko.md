@@ -8,6 +8,28 @@
 ![Runtime](https://img.shields.io/badge/runtime-standard%20library-16a34a)
 ![Checks](https://github.com/ProjectFrame-skills/SpecFrame/actions/workflows/verify.yml/badge.svg)
 
+## 필수 프로그램
+
+| 프로그램 | 필요한 경우 |
+|---|---|
+| Codex 앱 또는 CLI | `$specframe`을 실행할 AI 호스트입니다. skills·로컬 파일 접근·Python 실행 권한이 필요하며, npm 패키지만 설치한다고 AI 호스트가 제공되는 것은 아닙니다. |
+| [Python 3.11 이상](https://www.python.org/downloads/) | skill 설치와 상태 저장·복구에 항상 필요합니다. Python 표준 라이브러리를 사용하며 별도 데이터베이스나 pip 패키지는 필요하지 않습니다. |
+| [Node.js 18 이상](https://nodejs.org/en/download) + npm/npx | npm/npx 방식으로 설치하거나 `specframe` 명령을 쓸 때 필요합니다. 현재 지원되는 Node.js LTS 버전을 권장하며, npm/npx는 보통 Node.js와 함께 설치됩니다. |
+| [Git](https://git-scm.com/downloads/) | 아래 `git clone` 소스 설치 방식을 사용할 때만 필요합니다. |
+
+**npm 설치:** Codex + Node.js/npm/npx + Python. **소스 설치:** Codex + Git + Python이며, npm CLI를 쓰지 않으면 SpecFrame 자체에는 Node.js가 필요하지 않습니다.
+
+npm 설치 전에 다음 명령으로 확인할 수 있습니다.
+
+```bash
+node --version
+npm --version
+npx --version
+python3 --version
+```
+
+Windows에서 Python 명령이 `python` 또는 `py -3`라면 해당 명령을 사용하세요. `SPECFRAME_PYTHON`은 이미 설치된 Python 실행 파일을 선택하며 Python을 설치해 주지는 않습니다. 다른 AI 호스트는 호환되는 skill 지원과 로컬 실행 기능이 필요합니다. 작업별 추가 도구·서비스 권한은 실제 목표에 따라 달라지며 공통 필수 프로그램은 아닙니다.
+
 ## 🚀 npm으로 설치하기
 
 ```bash
@@ -21,7 +43,7 @@ specframe install
 npx --yes specframe-cli@latest install
 ```
 
-Node.js 18 이상과 Python 3.11 이상이 필요합니다. 설치 후 새 Codex 대화에서 `$specframe`을 호출하세요. 설치 도구는 해당 대화의 상태만 복구하는 hook을 Codex 설정에 병합합니다. 실제 실행에는 호스트의 정확한 hook 정의에 대한 신뢰 승인이 필요합니다.
+설치 후 새 Codex 대화에서 `$specframe`을 호출하세요. 설치 도구는 해당 대화의 상태만 복구하는 hook을 Codex 설정에 병합합니다. 실제 실행에는 호스트의 정확한 hook 정의에 대한 신뢰 승인이 필요합니다.
 
 **웹·앱·프로그램 아이디어를 검토하고 승인할 수 있는 프로젝트 요구사항으로 구체화하는 AI skill.**
 
@@ -63,7 +85,7 @@ cd SpecFrame
 python3 tools/install_specframe.py
 ```
 
-소스 설치에는 Python 3.11 이상이 필요하며 기본 홈은 `~/.codex`입니다. 다른 경로는 `--destination`과 `--hooks`로 지정하세요. npm CLI에는 추가 npm 의존성이 없고 동일한 Python 설치 도구를 호출합니다. Python 실행 파일을 직접 고르려면 `SPECFRAME_PYTHON`을 설정하세요.
+소스 설치에는 Python 3.11 이상이 필요하며 기본 홈은 `~/.codex`입니다. 다른 경로는 `--destination`과 `--hooks`로 지정하세요. npm CLI에는 추가 npm 의존성이 없고 동일한 Python 설치 도구를 호출합니다. 이미 설치된 Python 실행 파일을 직접 고르려면 `SPECFRAME_PYTHON`을 설정하세요. 이 설정이 Python을 설치하지는 않습니다.
 
 다른 호스트에서도 skills와 로컬 Python 실행을 지원하면 `skills/specframe/SKILL.md`와 연결 문서를 불러올 수 있습니다. hook 자동 호출은 호스트 지원에 달려 있습니다. 자동 호출이 없다면 이전 결정에 의존하는 작업 전에 복구 상태를 명시적으로 읽어야 합니다.
 
