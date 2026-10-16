@@ -14,17 +14,15 @@
 |---|---|
 | Codex 应用或 CLI | 运行 `$specframe` 的 AI 宿主，需要支持 skills、本地文件访问和 Python 执行权限。仅安装 npm 包不会提供 AI 宿主。 |
 | [Python 3.11+](https://www.python.org/downloads/) | skill 安装及状态保存/恢复始终需要。SpecFrame 使用 Python 标准库，不需要额外数据库或 pip 包。 |
-| [Node.js 18+](https://nodejs.org/en/download)，含 npm/npx | 使用 npm/npx 安装或 `specframe` 命令时需要。建议选择仍受支持的 Node.js LTS 版本；npm/npx 通常随 Node.js 安装。 |
-| [Git](https://git-scm.com/downloads/) | 仅在使用下方 `git clone` 源码安装方式时需要。 |
+| [Node.js 18+](https://nodejs.org/en/download)，含 npm | 使用 npm 安装或 `specframe` 命令时需要。建议选择仍受支持的 Node.js LTS 版本；npm 通常随 Node.js 安装。 |
 
-**npm 安装：** Codex + Node.js/npm/npx + Python。**源码安装：** Codex + Git + Python；不使用 npm CLI 时，SpecFrame 自身无需 Node.js。
+**所需软件：** Codex + Node.js/npm + Python。
 
-安装前可检查 npm 方式需要的软件：
+安装前可检查所需软件：
 
 ```bash
 node --version
 npm --version
-npx --version
 python3 --version
 ```
 
@@ -36,24 +34,20 @@ npm CLI 先检查 PATH 中的 `python3`/`python`（Windows 还检查 `py -3`）�
 
 `SPECFRAME_PYTHON` 显式指定一个可执行文件。路径或版本不正确时会报错，不会悄悄改用其他 Python。错误区分文件不存在、版本过旧、权限拒绝、Python 检查失败/超时，以及安装程序失败，并提供失败检查与下一步提示。
 
-必要时可指定已确认的 Python 路径：
+全局 CLI 安装后，必要时可指定已确认的 Python 路径：
 
 ```bash
-SPECFRAME_PYTHON="/absolute/path/to/python3" npx --yes specframe-cli@latest install
+SPECFRAME_PYTHON="/absolute/path/to/python3" specframe install
 ```
 
-## 🚀 通过 npm 安装
+## 🚀 通过 npm 全局安装
 
 ```bash
 npm install -g specframe-cli@latest
 specframe install
 ```
 
-**也可以不安装全局 CLI，直接用一条命令安装 skill：**
-
-```bash
-npx --yes specframe-cli@latest install
-```
+第一条命令安装全局 CLI，第二条命令安装实际 skill。可用 `specframe --version` 检查 CLI。
 
 安装后在新的 Codex 对话中调用 `$specframe`。安装工具还会将只针对对应会话状态的恢复 hook 合并到 Codex 配置；实际执行前，宿主必须信任其准确配置。
 
@@ -88,16 +82,6 @@ specframe install \
 ```
 
 安装工具复制实现并保留已有 hook 组。首次更改 hook 前，如已有配置，会保存为 `hooks.json.before-specframe`。它不会改变宿主信任，也不会备份已有 skill 安装；需要旧版本时请另行复制。
-
-### 从源码安装（可选）
-
-```bash
-git clone https://github.com/ProjectFrame-skills/SpecFrame.git
-cd SpecFrame
-python3 tools/install_specframe.py
-```
-
-源码安装需要 Python 3.11+，默认使用 `~/.codex`；其他路径请通过 `--destination` 和 `--hooks` 指定。npm CLI 没有额外 npm 依赖，调用同一个 Python 安装工具。如需明确选择已安装的 Python 可执行文件，可设置 `SPECFRAME_PYTHON`；该设置不会安装 Python。
 
 其他支持 skills 和本地 Python 执行的宿主可以加载 `skills/specframe/SKILL.md` 及其引用。自动调用 hook 取决于宿主支持；无法自动调用时，应在依赖先前决策的工作之前明确读取恢复状态。
 

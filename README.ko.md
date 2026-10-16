@@ -14,17 +14,15 @@
 |---|---|
 | Codex 앱 또는 CLI | `$specframe`을 실행할 AI 호스트입니다. skills·로컬 파일 접근·Python 실행 권한이 필요하며, npm 패키지만 설치한다고 AI 호스트가 제공되는 것은 아닙니다. |
 | [Python 3.11 이상](https://www.python.org/downloads/) | skill 설치와 상태 저장·복구에 항상 필요합니다. Python 표준 라이브러리를 사용하며 별도 데이터베이스나 pip 패키지는 필요하지 않습니다. |
-| [Node.js 18 이상](https://nodejs.org/en/download) + npm/npx | npm/npx 방식으로 설치하거나 `specframe` 명령을 쓸 때 필요합니다. 현재 지원되는 Node.js LTS 버전을 권장하며, npm/npx는 보통 Node.js와 함께 설치됩니다. |
-| [Git](https://git-scm.com/downloads/) | 아래 `git clone` 소스 설치 방식을 사용할 때만 필요합니다. |
+| [Node.js 18 이상](https://nodejs.org/en/download) + npm | npm 방식으로 전역 설치하거나 `specframe` 명령을 쓸 때 필요합니다. 현재 지원되는 Node.js LTS 버전을 권장하며, npm은 보통 Node.js와 함께 설치됩니다. |
 
-**npm 설치:** Codex + Node.js/npm/npx + Python. **소스 설치:** Codex + Git + Python이며, npm CLI를 쓰지 않으면 SpecFrame 자체에는 Node.js가 필요하지 않습니다.
+**필수 프로그램:** Codex + Node.js/npm + Python.
 
 npm 설치 전에 다음 명령으로 확인할 수 있습니다.
 
 ```bash
 node --version
 npm --version
-npx --version
 python3 --version
 ```
 
@@ -36,24 +34,20 @@ npm CLI는 먼저 PATH의 `python3`·`python`을 확인합니다(Windows는 `py 
 
 `SPECFRAME_PYTHON`으로 실행 파일을 지정하면 해당 파일만 사용합니다. 경로·버전이 잘못돼도 다른 Python으로 조용히 바꾸지 않습니다. 오류는 실행 파일 없음·버전 부족·권한 거부·Python 검사 실패/시간 초과·설치 프로그램 실패를 구분하고, 실패한 검사와 다음 조치를 안내합니다.
 
-필요하면 확인한 Python 경로를 직접 지정할 수 있습니다.
+전역 CLI 설치 후 필요하면 확인한 Python 경로를 직접 지정할 수 있습니다.
 
 ```bash
-SPECFRAME_PYTHON="/absolute/path/to/python3" npx --yes specframe-cli@latest install
+SPECFRAME_PYTHON="/absolute/path/to/python3" specframe install
 ```
 
-## 🚀 npm으로 설치하기
+## 🚀 npm으로 전역 설치
 
 ```bash
 npm install -g specframe-cli@latest
 specframe install
 ```
 
-**전역 CLI 설치 없이 한 번에 skill을 설치할 수도 있습니다.**
-
-```bash
-npx --yes specframe-cli@latest install
-```
+첫 명령은 전역 CLI를, 두 번째 명령은 실제 skill을 설치합니다. `specframe --version`으로 CLI 설치를 확인할 수 있습니다.
 
 설치 후 새 Codex 대화에서 `$specframe`을 호출하세요. 설치 도구는 해당 대화의 상태만 복구하는 hook을 Codex 설정에 병합합니다. 실제 실행에는 호스트의 정확한 hook 정의에 대한 신뢰 승인이 필요합니다.
 
@@ -88,16 +82,6 @@ specframe install \
 ```
 
 설치 도구는 구현체를 복사하고 기존 hook 그룹을 유지합니다. hook을 처음 변경하기 전 기존 설정이 있으면 `hooks.json.before-specframe`으로 보존합니다. 호스트의 신뢰 설정은 변경하지 않습니다. 기존 skill 설치본은 백업하지 않으므로 이전 버전이 필요하면 따로 보관하세요.
-
-### 소스에서 설치하기 (선택)
-
-```bash
-git clone https://github.com/ProjectFrame-skills/SpecFrame.git
-cd SpecFrame
-python3 tools/install_specframe.py
-```
-
-소스 설치에는 Python 3.11 이상이 필요하며 기본 홈은 `~/.codex`입니다. 다른 경로는 `--destination`과 `--hooks`로 지정하세요. npm CLI에는 추가 npm 의존성이 없고 동일한 Python 설치 도구를 호출합니다. 이미 설치된 Python 실행 파일을 직접 고르려면 `SPECFRAME_PYTHON`을 설정하세요. 이 설정이 Python을 설치하지는 않습니다.
 
 다른 호스트에서도 skills와 로컬 Python 실행을 지원하면 `skills/specframe/SKILL.md`와 연결 문서를 불러올 수 있습니다. hook 자동 호출은 호스트 지원에 달려 있습니다. 자동 호출이 없다면 이전 결정에 의존하는 작업 전에 복구 상태를 명시적으로 읽어야 합니다.
 

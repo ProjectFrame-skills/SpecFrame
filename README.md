@@ -14,17 +14,15 @@
 |---|---|
 | Codex app or CLI | The AI host that runs `$specframe`, with skills, local file access, and permission to execute Python. Installing the npm package alone does not provide an AI host. |
 | [Python 3.11+](https://www.python.org/downloads/) | Required for skill installation and the state/recovery helper. SpecFrame uses Python's standard library and does not require a separate database or pip packages. |
-| [Node.js 18+](https://nodejs.org/en/download), with npm/npx | Required for the npm/npx installation route and the `specframe` command. Use a currently supported Node.js LTS release. npm/npx are normally included with Node.js. |
-| [Git](https://git-scm.com/downloads/) | Required only for the `git clone` source-install route shown below. |
+| [Node.js 18+](https://nodejs.org/en/download), with npm | Required for the npm installation route and the `specframe` command. Use a currently supported Node.js LTS release. npm is normally included with Node.js. |
 
-**npm route:** Codex + Node.js/npm/npx + Python. **Source route:** Codex + Git + Python; SpecFrame itself does not require Node.js unless you also use the npm CLI.
+**Required:** Codex + Node.js/npm + Python.
 
-Check the npm-route programs before installation:
+Check the required programs before installation:
 
 ```bash
 node --version
 npm --version
-npx --version
 python3 --version
 ```
 
@@ -36,24 +34,20 @@ The npm CLI first uses `python3`/`python` on PATH (`py -3` on Windows). On macOS
 
 `SPECFRAME_PYTHON` explicitly selects one executable. If set, a bad path or version is reported instead of silently selecting another Python. Errors distinguish a missing executable, an old version, permission denial, a failed/timed-out Python check, and an installer failure. An error lists the failed Python checks and the next step.
 
-If necessary, select a known Python directly:
+After installing the global CLI, select a known Python directly if necessary:
 
 ```bash
-SPECFRAME_PYTHON="/absolute/path/to/python3" npx --yes specframe-cli@latest install
+SPECFRAME_PYTHON="/absolute/path/to/python3" specframe install
 ```
 
-## 🚀 Install with npm
+## 🚀 Global installation with npm
 
 ```bash
 npm install -g specframe-cli@latest
 specframe install
 ```
 
-**Or install the skill in one command, without a global CLI:**
-
-```bash
-npx --yes specframe-cli@latest install
-```
+The first command installs the global CLI; the second installs the actual skill. Check the CLI with `specframe --version`.
 
 Invoke `$specframe` in a new Codex conversation after installation. The installer also merges a thread-scoped recovery hook into Codex configuration; the host must trust its exact definition before it can run.
 
@@ -88,16 +82,6 @@ specframe install \
 ```
 
 The installer copies the implementation and preserves existing hook groups. Before its first hook change, it saves an existing configuration as `hooks.json.before-specframe`. It does not change hook trust or back up an existing skill installation; keep a separate copy if you need the previous version.
-
-### Install from source (optional)
-
-```bash
-git clone https://github.com/ProjectFrame-skills/SpecFrame.git
-cd SpecFrame
-python3 tools/install_specframe.py
-```
-
-The source installer needs Python 3.11+ and defaults to `~/.codex`; pass `--destination` and `--hooks` for other paths. The npm CLI has no npm dependencies and calls the same bundled Python installer. Set `SPECFRAME_PYTHON` to select an existing Python executable if needed; it does not install Python.
 
 Other hosts can load `skills/specframe/SKILL.md` and its references if they support skills and local Python execution. Automatic hook invocation depends on the host. Explicitly read recovery state before dependent work when automatic invocation is unavailable.
 
