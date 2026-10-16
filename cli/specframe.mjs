@@ -5,6 +5,7 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import { findPython } from './python.mjs';
+import { updateSkill } from './update.mjs';
 
 const root = new URL('../', import.meta.url);
 const metadata = JSON.parse(readFileSync(new URL('package.json', root), 'utf8'));
@@ -13,6 +14,7 @@ const help = `SpecFrame ${metadata.version}
 
 Usage:
   specframe install [--destination /path/to/skills/specframe] [--hooks /path/to/hooks.json]
+  specframe update [--destination /path/to/skills/specframe] [--hooks /path/to/hooks.json]
   specframe --version
   specframe --help
 
@@ -32,7 +34,7 @@ function main() {
     console.log(metadata.version); return 0;
   }
   const options = new Map();
-  if (args[0] !== 'install' || args.length % 2 !== 1) {
+  if (!['install', 'update'].includes(args[0]) || args.length % 2 !== 1) {
     console.error(`Invalid arguments.\n${help}`); return 2;
   }
   for (let i = 1; i < args.length; i += 2) {
@@ -50,6 +52,7 @@ function main() {
   let python;
   try { python = findPython('SPECFRAME_PYTHON'); }
   catch (error) { console.error(error.message); return 1; }
+  if (args[0] === 'update') return updateSkill(metadata.name, 'specframe', installerArgs);
   const result = spawnSync(python.command, [...python.prefix, fileURLToPath(new URL('tools/install_specframe.py', root)),
     ...installerArgs], { windowsHide: true, stdio: 'inherit' });
   if (result.error) { console.error(`Could not start the skill installer: ${result.error.message}`); return 1; }

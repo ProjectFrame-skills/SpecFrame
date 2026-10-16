@@ -85,6 +85,16 @@ specframe install \
 
 其他支持 skills 和本地 Python 执行的宿主可以加载 `skills/specframe/SKILL.md` 及其引用。自动调用 hook 取决于宿主支持；无法自动调用时，应在依赖先前决策的工作之前明确读取恢复状态。
 
+## 更新
+
+```bash
+specframe update
+```
+
+先将全局 CLI 更新到 npm 最新发布版本，再使用新版安装工具更新实际 skill。之后请在新的 Codex 对话中使用。保持原有 `CODEX_HOME`；如最初指定了自定义路径，请向 `update` 传入相同的 `--destination`、`--hooks` 选项。自定义路径不会被自动记住。
+
+旧版 CLI 如不识别 `update`，请先执行一次上方的两条全局安装命令。如 npm 更新成功但 skill 安装失败，请解决提示的问题，再用相同路径选项运行 `specframe install`。
+
 ## 使用方法
 
 ### 1. 明确新想法

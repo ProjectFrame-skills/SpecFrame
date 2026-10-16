@@ -85,6 +85,16 @@ specframe install \
 
 다른 호스트에서도 skills와 로컬 Python 실행을 지원하면 `skills/specframe/SKILL.md`와 연결 문서를 불러올 수 있습니다. hook 자동 호출은 호스트 지원에 달려 있습니다. 자동 호출이 없다면 이전 결정에 의존하는 작업 전에 복구 상태를 명시적으로 읽어야 합니다.
 
+## 업데이트
+
+```bash
+specframe update
+```
+
+최신 npm 버전으로 전역 CLI를 갱신한 뒤, 새 버전의 설치 도구로 실제 skill도 갱신합니다. 이후 새 Codex 대화에서 사용하세요. 기존과 같은 `CODEX_HOME`을 사용하고, 설치 경로를 직접 지정했다면 `update`에도 같은 `--destination`, `--hooks` 옵션을 넘기세요. 사용자 지정 경로를 자동으로 기억하지는 않습니다.
+
+이전 CLI에서 `update`를 인식하지 못하면 위의 전역 설치 명령 두 개를 한 번 실행하세요. npm 갱신 후 skill 설치만 실패했다면 안내된 문제를 해결하고 같은 경로 옵션으로 `specframe install`을 실행하세요.
+
 ## 사용법
 
 ### 1. 새로운 아이디어 구체화

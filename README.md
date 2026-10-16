@@ -85,6 +85,16 @@ The installer copies the implementation and preserves existing hook groups. Befo
 
 Other hosts can load `skills/specframe/SKILL.md` and its references if they support skills and local Python execution. Automatic hook invocation depends on the host. Explicitly read recovery state before dependent work when automatic invocation is unavailable.
 
+## Update
+
+```bash
+specframe update
+```
+
+Updates the global CLI to the latest published npm version, then runs that version's installer to update the actual skill. Use a new Codex conversation afterward. Keep the same `CODEX_HOME`; if you originally chose explicit paths, pass the same `--destination`, `--hooks` options to `update`. Custom paths are not remembered automatically.
+
+If your older CLI does not recognize `update`, run the two global installation commands above once. If npm succeeds but skill installation fails, fix the reported problem and run `specframe install` with the same path options.
+
 ## Usage
 
 ### 1. Clarify a new idea
