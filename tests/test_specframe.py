@@ -98,6 +98,39 @@ class CurrentStateTests(unittest.TestCase):
         self.assertTrue(json.loads(result.stdout)["written"])
         self.assertEqual(list(self.path.parent.iterdir()), [self.path])
 
+    def test_review_context_cannot_disappear_while_editorial_save_preserves_review(self):
+        state.save(self.path, "session-a", {}, reviewed=True)
+        before = self.path.read_bytes()
+        for key in ("GOAL", "SCOPE", "CONSTRAINTS"):
+            for value in (None, "", "   "):
+                with self.subTest(key=key, value=value):
+                    with self.assertRaisesRegex(ValueError, "Review/approval needs"):
+                        state.save(self.path, "session-a", {"sections": {key: value}}, editorial=True)
+                    self.assertEqual(before, self.path.read_bytes())
+        # A genuine meaning change may return to draft with an unresolved context.
+        state.save(self.path, "session-a", {"sections": {"GOAL": None}})
+        self.assertEqual(state.load(self.path)["approval"], "draft")
+        before = self.path.read_bytes()
+        with self.assertRaises(ValueError):
+            state.save(self.path, "session-a", {}, reviewed=True)
+        self.assertEqual(before, self.path.read_bytes())
+
+    def test_corrupt_review_context_is_rejected_without_rewriting_or_handoff(self):
+        for approval in ("pending", "approved"):
+            with self.subTest(approval=approval):
+                data = {"format": 1, "owner": "session-a", "sections": self.patch["sections"].copy(),
+                        "focus": ["R1"], "pending": ["R2"], "next": "Review", "approval": approval}
+                del data["sections"]["SCOPE"]
+                self.path.write_text(json.dumps(data))
+                before = self.path.read_bytes()
+                with self.assertRaises(ValueError):
+                    state.load(self.path)
+                result = subprocess.run([sys.executable, str(SCRIPT), "--state", str(self.path),
+                                         "--owner", "session-a", "resume"], capture_output=True, text=True)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("Review/approval needs", result.stderr)
+                self.assertEqual(before, self.path.read_bytes())
+
 
 if __name__ == "__main__":
     unittest.main()

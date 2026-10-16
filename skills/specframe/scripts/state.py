@@ -44,6 +44,10 @@ def check_progress(data):
             raise ValueError(field + " must refer to existing sections.")
     if not isinstance(data.get("next"), str):
         raise ValueError("next must be text.")
+    if data.get("approval") in ("pending", "approved") and not all(
+        data["sections"].get(key, "").strip() for key in ("GOAL", "SCOPE", "CONSTRAINTS")
+    ):
+        raise ValueError("Review/approval needs current GOAL, SCOPE and CONSTRAINTS; unknown constraints may be explicit.")
 
 
 def write_current(path, data):
@@ -85,13 +89,11 @@ def save(path, owner, patch, editorial=False, reviewed=False):
     for field in ("focus", "pending", "next"):
         if field in patch:
             data[field] = patch[field]
-    check_progress(data)
     if changed and not editorial:
         data["approval"] = "draft"
     if reviewed:
-        if not all(data["sections"].get(k) for k in ("GOAL", "SCOPE", "CONSTRAINTS")):
-            raise ValueError("Review needs current GOAL, SCOPE and CONSTRAINTS; unknown constraints may be explicit.")
         data["approval"] = "pending"
+    check_progress(data)
     return {"written": write_current(path, data), "approval": data["approval"]}
 
 
