@@ -1,8 +1,8 @@
-# SpecFrame — Agensi candidate
+# SpecFrame — Agensi
 
 Turn web, app and program ideas into whole-scope requirements through adaptive questions, quality review and actual user approval.
 
-Based on SpecFrame 0.1.4. The operating contract, web/visual references and Python state helper retain their original bytes. The existing Codex/npm release and independent recovery bridge are unchanged. This candidate avoids redundant reads and full-document serialization when current content is retained. Shared-context references remain optional; each obligation and unresolved decision keeps its meaning. It preserves requirements coverage, review and recovery.
+Based on SpecFrame 0.1.5. The operating contract, web/visual references and Python state helper retain their original bytes. The existing Codex/npm release and independent recovery bridge are unchanged. This integration avoids redundant reads and full-document serialization when current content is retained. Shared-context references remain optional; each obligation and unresolved decision keeps its meaning. It preserves requirements coverage, review and recovery.
 
 ## Required setup
 
@@ -14,4 +14,4 @@ Agensi supplies the entrypoint, complete operating contract, applicable referenc
 
 ## Validation boundary
 
-Real Agensi delivery and actual Codex CLI 0.160.0 automatic compaction recovery were observed on macOS with normal hook trust on 2026-10-29; all 35 current bodies and decision/approval pointers survived unchanged. The threshold was narrowed for the test. Candidate amendments are separately evaluated against real MCP delivery; they are not claimed to be already published. Desktop, other agents and operating systems are not certified. SynFrame/ProjectFrame are not bundled, and this package does not implement the product.
+Real Agensi delivery and actual Codex CLI 0.160.0 automatic compaction recovery were observed on macOS with normal hook trust on 2026-10-29; all 35 current bodies and decision/approval pointers survived unchanged. The threshold was narrowed for the test. Agensi review determines which submitted version is served. Source/release builds alone are not proof that a marketplace update is live. Desktop, other agents and operating systems are not certified. SynFrame/ProjectFrame are not bundled, and this package does not implement the product.

@@ -206,3 +206,7 @@ tools/install_specframe.py   skill 复制及恢复 hook 集成
 - **批准后语义改变：** 文档返回草稿，需重新全范围审查和实际用户确认。
 
 README 采用 [SynFrame 的呈现结构](https://github.com/ProjectFrame-skills/SynFrame)，功能与安装说明依据 SpecFrame 自身实现编写。
+
+## Agensi
+
+Agensi 版本通过 MCP 实时交付，并使用单独配置且受信任的 Codex 恢复连接。可选的原文临时传输减少辅助脚本的重复编写，同时保留完整协议重新加载和当前状态所有权。 [Setup / 설정 / 配置](https://github.com/ProjectFrame-skills/SpecFrame/blob/main/integrations/agensi/README.md).

@@ -39,3 +39,5 @@ jobs:
           destination_root=$(mktemp -d)
           python3 tools/install_specframe.py --destination "$destination_root/specframe" --hooks "$destination_root/hooks.json"
           diff -r --exclude='__pycache__' --exclude='*.pyc' skills/specframe "$destination_root/specframe"
+      - name: Build reproducible Agensi payloads
+        run: python3 tools/build_agensi.py --output "$RUNNER_TEMP/agensi"

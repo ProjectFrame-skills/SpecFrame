@@ -214,3 +214,7 @@ Main pushes and pull requests run the existing runtime, CLI, package and isolate
 For a stable release, update `package.json`, commit to `main`, wait for verification, then push a matching `v<version>` tag. The release workflow verifies the tag belongs to `main`, repeats verification, packs the distribution, publishes the exact tarball through npm trusted publishing, and attaches artifacts to a GitHub release. Failed checks stop publishing. A retry skips an already-published npm version only when its integrity matches exactly.
 
 Maintainer setup: register the package's npm trusted publisher for this repository, workflow **publish.yml**, environment **npm**, with direct publishing allowed. The GitHub `npm` environment permits `v*` tags. No long-lived npm publishing token is stored in GitHub. Agensi packages, where present, are built as release assets; marketplace review remains separate.
+
+## Agensi
+
+SpecFrame on Agensi uses live MCP delivery and a separately trusted Codex recovery connection. The optional verified temporary transport reduces helper-source rewriting while preserving complete agreement reloads and current-state ownership. [Setup / 설정 / 配置](https://github.com/ProjectFrame-skills/SpecFrame/blob/main/integrations/agensi/README.md).

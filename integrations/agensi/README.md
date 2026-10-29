@@ -1,6 +1,6 @@
 # SpecFrame on Agensi: Codex setup and recovery
 
-Agensi integration, based on SpecFrame 0.1.4. This integration keeps the original requirements policy and Python state helper. Agensi supplies the skill instructions and references through MCP. A separately installed Codex callback restores the active project connection after compaction; it contains no cached Agensi skill instructions.
+Agensi integration, based on SpecFrame 0.1.5. This integration keeps the original requirements policy and Python state helper. Agensi supplies the skill instructions and references through MCP. A separately installed Codex callback restores the active project connection after compaction; it contains no cached Agensi skill instructions.
 
 ## Requirements
 
@@ -22,14 +22,14 @@ If this server is already configured, inspect it instead of adding a duplicate. 
 
 ## 2. Obtain the independent bridge
 
-The bridge is published separately in this repository's `codex/agensi-recovery-bridge` branch, under `integrations/agensi/`. It is not installed by the Agensi ZIP. Review the two Python files before using them.
+The bridge is published separately in this repository's `main` branch, under `integrations/agensi/`. It is not installed by the Agensi ZIP. Review the two Python files before using them.
 
 On macOS/Linux, download them without executing a remote installer:
 
 ```sh
 mkdir -p "$HOME/.local/share/specframe-agensi-bridge"
-curl --fail --location https://raw.githubusercontent.com/ProjectFrame-skills/SpecFrame/codex/agensi-recovery-bridge/integrations/agensi/bridge.py --output "$HOME/.local/share/specframe-agensi-bridge/bridge.py"
-curl --fail --location https://raw.githubusercontent.com/ProjectFrame-skills/SpecFrame/codex/agensi-recovery-bridge/integrations/agensi/bind.py --output "$HOME/.local/share/specframe-agensi-bridge/bind.py"
+curl --fail --location https://raw.githubusercontent.com/ProjectFrame-skills/SpecFrame/main/integrations/agensi/bridge.py --output "$HOME/.local/share/specframe-agensi-bridge/bridge.py"
+curl --fail --location https://raw.githubusercontent.com/ProjectFrame-skills/SpecFrame/main/integrations/agensi/bind.py --output "$HOME/.local/share/specframe-agensi-bridge/bind.py"
 ```
 
 Check `python3 --version`. If Homebrew Python is absent from PATH, inspect `/opt/homebrew/bin/python3` (Apple Silicon) or `/usr/local/bin/python3` (Intel) and use the actual Python 3.11+ executable. Windows requires an equivalent reviewed absolute interpreter/script command; it was not tested in this integration trial.
@@ -64,10 +64,10 @@ The package defines requirements, performs quality review and requests actual us
 
 `transport.py` removes the repeated model-authored copy of the helper source. It stages only the actual matching `get_skill` response for `scripts/state.py` when its complete UTF-8 bytes match the independently reviewed SpecFrame 0.1.4 source pin. It has no network client or bundled state-helper copy. The model still authors the current requirements patch, and the unchanged helper still validates and writes it.
 
-Obtain `transport.py` alongside the two bridge files from the separately reviewed `codex/agensi-response-efficiency` branch.
+Obtain `transport.py` alongside the two bridge files from the separately reviewed `main` branch.
 
 ```sh
-curl --fail --location https://raw.githubusercontent.com/ProjectFrame-skills/SpecFrame/codex/agensi-response-efficiency/integrations/agensi/transport.py --output "$HOME/.local/share/specframe-agensi-bridge/transport.py"
+curl --fail --location https://raw.githubusercontent.com/ProjectFrame-skills/SpecFrame/main/integrations/agensi/transport.py --output "$HOME/.local/share/specframe-agensi-bridge/transport.py"
 ```
  This is optional; the original temporary-helper execution remains supported. For a reviewed installation, generate additional hook fragments with absolute paths:
 
@@ -87,20 +87,16 @@ Use the actual connected MCP tool name instead of `mcp__agensi__get_skill` if di
 
 One pending source lives in a private temporary file until the immediate operation finishes. The runner removes it in `finally`; turn-end, compact, resume, interrupt and session-end handlers remove unused preparations. No preparation is reused after context loss or a user wait. A hard process kill can prevent ordinary cleanup; a leftover is not an instruction cache or approval, and must not be reused. A later matching-session cleanup or explicit removal clears it. Malformed, partial, changed, wrong-server/listing or error responses do not enable the fast path. A different helper version needs independent pin review; it is not silently accepted. Windows and other hosts remain unverified.
 
-## Candidate delivery efficiency
+## Delivery efficiency
 
-The candidate reuses complete helper source and applicable references only while actually retained. Related reads may share one fresh helper inside a single shell invocation with cleanup in `finally`. The optional transport holds one pending verified delivery only until that operation or a supported cleanup event; it creates no permanent helper installation. After context loss the full entrypoint and complete operating contract are still fetched, and a needed helper is fetched again. Missing or partial delivery still stops dependent work.
+The integration reuses complete helper source and applicable references only while actually retained. Related reads may share one fresh helper inside a single shell invocation with cleanup in `finally`. The optional transport holds one pending verified delivery only until that operation or a supported cleanup event; it creates no permanent helper installation. After context loss the full entrypoint and complete operating contract are still fetched, and a needed helper is fetched again. Missing or partial delivery still stops dependent work.
 
 Shared source/goal/verification statements may live once in current shared context with explicit references. Each independent obligation keeps its ID, distinct conditions/exceptions, observable pass/fail evidence and any source/status override. Local answers update only affected bodies and pointers. Before saving, reconcile each affected body’s unresolved decisions with the answer. Keep unanswered targets, states and transition directions; shared text consolidation does not resolve a choice. Nonconsecutive question keys use literal labels so display numbering and stored meanings stay aligned. No fixed question count, full interview log or change-reason history is added.
 
-The candidate is not automatically published by these repository changes. To prepare an isolated Agensi package from this unchanged Codex release:
+Building or releasing this integration does not bypass Agensi review. To prepare an isolated Agensi package from this unchanged Codex release:
 
 ```sh
-out=$(mktemp -d /tmp/specframe-agensi-candidate.XXXXXX)
-cp -R skills/specframe/. "$out/"
-patch -d "$out" -p1 < integrations/agensi/skill.patch
-cp integrations/agensi/README.md "$out/references/setup.md"
-cp integrations/agensi/package-readme.md "$out/README.md"
+python3 tools/build_agensi.py --output dist
 ```
 
-Use a new empty output folder. The patch must apply cleanly to the selected source; do not bypass failed hunks. The operating contract, domain references, state helper, bridge and Codex/npm release are unchanged. Benchmark results must distinguish the published MCP payload from candidate amendments; an instruction overlay is not evidence that Agensi already serves the candidate.
+The build uses an isolated temporary folder and deterministic ZIP metadata. Its patch must apply cleanly to the selected source; do not bypass failed hunks. The operating contract, domain references, state helper, bridge and Codex/npm release are unchanged. Validation reports distinguish published MCP payloads from prospective amendments; an instruction overlay alone is not evidence that Agensi serves an update.

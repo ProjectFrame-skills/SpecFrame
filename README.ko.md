@@ -206,3 +206,7 @@ tools/install_specframe.py   skill 복사와 복구 hook 통합
 - **승인 후 의미가 변경됨:** 초안으로 돌아가며 전체 검토와 실제 사용자 확인을 다시 받아야 합니다.
 
 README는 [SynFrame의 구성](https://github.com/ProjectFrame-skills/SynFrame)을 따르며 기능과 설치 안내는 SpecFrame 구현을 기준으로 작성했습니다.
+
+## Agensi
+
+Agensi 버전은 MCP 실시간 전달과 별도로 신뢰한 Codex 복구 연결을 사용합니다. 선택적으로 원문 임시 전달 연결을 구성하면 도우미 코드 재작성을 줄이며, 합의 전문 재로딩과 현재 상태의 소유권을 유지합니다. [Setup / 설정 / 配置](https://github.com/ProjectFrame-skills/SpecFrame/blob/main/integrations/agensi/README.md).
